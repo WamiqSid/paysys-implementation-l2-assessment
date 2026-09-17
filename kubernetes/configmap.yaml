@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minipay-config
+  namespace: minipay
+data:
+  LOG_LEVEL: "INFO"
+  BUGGY_SEARCH: "false"
+  API_HOST: "0.0.0.0"
+  API_PORT: "8080"

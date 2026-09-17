@@ -1,0 +1,8 @@
+rows=50000
+plan_before=[(2, 0, 216, 'SCAN transactions')]
+avg_ms_before=10.922
+plan_after=[(3, 0, 62, 'SEARCH transactions USING INDEX idx_transactions_ref (transaction_ref=?)')]
+avg_ms_after=0.011
+speedup_x=965.8
+
+Command: python sql/benchmark_search.py

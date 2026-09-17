@@ -1,26 +1,51 @@
-# Paysys Labs – Implementation & L2 Support Engineer Technical Assessment
+# Paysys Labs – MiniPay implementation & L2 assessment
 
-**Time window:** Submit within 48 hours of receiving the assessment.  
-**Expected hands-on effort:** Approximately 6–10 hours.  
-**Submission:** Public GitHub repository.
+Public submission for the Implementation & L2 Support Engineer exercise. MiniPay is a small payment stack: operator UI, REST API, PostgreSQL (SQLite locally), Kubernetes manifests, SQL investigations, a Python L2 CLI, API/UI automation, and three incident RCAs.
 
-## Objective
-This assessment evaluates practical ability to implement, operate, troubleshoot, test, and automate support for a small enterprise-style application. We value investigation, engineering judgement, automation, documentation, and effective use of AI more than memorized commands.
+**Default login (local demo):** API key `minipay-dev-key`  
+**App:** http://127.0.0.1:8080 after setup
 
-## Scenario
-You are joining an implementation/L2 support team responsible for **MiniPay**, a small payment-processing application. It consists of a web UI, REST services, and a relational database. Your assignment is to deploy and operate the environment, demonstrate database and web-service proficiency, automate testing, build a support utility, and investigate production-style incidents.
+## Quick start
+See [SETUP.md](SETUP.md). Shortest path:
 
-## Skills assessed
-1. Linux
-2. Git
-3. SQL
-4. Kubernetes
-5. Rancher
-6. Python utilities/automation
-7. Web services
-8. API test automation
-9. GUI test automation
-10. L2 troubleshooting and documentation
-11. Effective and responsible use of AI tools
+```bash
+pip install -r minipay/requirements.txt pytest httpx
+pip install -r python/requirements.txt
+cd minipay && python seed.py --reset && python -m uvicorn app.main:app --port 8080
+```
 
-Read `INSTRUCTIONS.md` before starting. The files under `requirements/` define the tasks. The `incidents/` folder contains support incidents to investigate.
+## Repository map
+
+| Path | What it is |
+|---|---|
+| `minipay/` | FastAPI app + operator UI + Dockerfile + seeder |
+| `database/` | Canonical schema and 50k-row generator |
+| `sql/` | Seven investigation queries, indexes, performance write-up |
+| `kubernetes/` | Corrected manifests (do not apply the starter YAML) |
+| `python/` | L2 support CLI + unit tests |
+| `tests/api/` | pytest API suite (`python -m pytest tests/api -q`) |
+| `tests/ui/` | Playwright journeys (`npx playwright test`) |
+| `investigation/` | INCIDENT-001/002/003 RCAs + Kubernetes findings |
+| `evidence/` | Linux capture, Rancher attempt, Docker/K8s blockers |
+| `ARCHITECTURE.md` | Runtime design |
+| `AI_USAGE.md` | How AI was used and where it was overruled |
+
+## Scoring coverage
+
+| Area | Where to look |
+|---|---|
+| L2 incidents (20) | `investigation/INCIDENT-00*.md` |
+| Kubernetes (15) | `kubernetes/`, `investigation/kubernetes-findings.md` (live pods blocked: `evidence/environment-blockers.md`) |
+| SQL (15) | `sql/*.sql`, `sql/PERFORMANCE.md` |
+| Python CLI (15) | `python/support_tool.py` |
+| API tests (10) | `tests/api/` |
+| UI tests (10) | `tests/ui/` |
+| Linux (5) | `evidence/linux.md`, `evidence/healthcheck.sh` |
+| Git (5) | history + tag `submission-v1.0` |
+| Rancher (5) | `evidence/rancher.md` (Desktop installed; cluster VM did not stay up) |
+
+## What is still environment-blocked
+Application code, SQL, CLI, API/UI tests, and corrected Kubernetes YAML are in the repo. A **live** Ready cluster and Rancher screenshots were not finished on this Windows PC: Docker/Rancher Desktop crashed (Hyper-V socket, missing docker pipe, `6443` refused, WSL `rancher-desktop` Stopped). Causes and commands: `evidence/environment-blockers.md`. Evaluator can replay K8s on any machine with a working Docker/Kind/K3s using `SETUP.md` and `kubernetes/README.md`.
+
+## Git
+Work is on `main`. Tag the final pushed snapshot `submission-v1.0`.

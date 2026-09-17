@@ -1,4 +1,40 @@
-/private_evaluator/
-__pycache__/
-*.pyc
+# Secrets and local env
 .env
+.env.*
+!.env.example
+secret.env
+*.pem
+*.key
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# App data
+data/
+*.db
+*.sqlite3
+seed.sql
+
+# Node / Playwright
+node_modules/
+playwright-report/
+test-results/
+blob-report/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Evaluator-only
+/private_evaluator/
